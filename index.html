@@ -1,12 +1,72 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div id="code-screen">
+    <!--Screen to input the code-->
+    <div id="code-screen" class="screen" style="display: block">
+      <h1>where2eat</h1>
       <form id="code-form">
-        <input type=
+        <input type="text" maxlength=6 /> <br>
+        <input type="button" value="Join" onClick="switchScreen('food-type-vote')" />
       </form>
     </div>
+
+    <!--Screen to vote on food type-->
+    <div id="food-type-vote-screen" class="screen">
+      <div id="food-type-list" class="item-list">
+
+        <div class="item">
+          <div class="item-name">
+            <span>Chinese</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-name">
+            <span>Mexican</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-name">
+            <span>Indian</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!--Screen to-->
+    <div id="food-type-vote-screen" class="screen">
+      <div id="" class="item-list">
+
+        <div class="item">
+          <div class="item-name">
+            <span>Yasss Chinese</span>
+          </div>
+          <div class="item-desc">
+            <span></span>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-name">
+            <span>Slay Mexican</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-name">
+            <span>Mamas Indian</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="js/index.js"></script>
   </body>
 </html>

@@ -2,8 +2,8 @@
 
 ![WhereToEat logo](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/001/657/678/datas/original.jpg)
 
-# What Inspired Us
-Our project was inspired by the difficulty of deciding on a restaurant as a large group and the tension it creates for the remainder of your friendship.
+# What inspired us
+Our project was inspired by the difficulty of deciding on a restaurant as a large group and the tension it creates for the remainder of your friendship. We also wanted to help small businesses, especially with the difficulty they've had due to COVID, and we believe that our app is a great way to find local restaurants to support.
 
 # What WhereToEat does
 WhereToEat uses an online room for users to access via code. The host can select a price range and then voting commences! Each user can choose what type of food they want and also any dietary restrictions they need met and WhereToEat will generate five nearby restaurants matching what the group is looking for. The users can then vote on which of these restaurants they want and head there while the night is still young.

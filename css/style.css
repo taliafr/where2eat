@@ -93,3 +93,9 @@ div.item div.item-name {
   background-color: rgba(255, 255, 255, 1);
   cursor: pointer;
 }
+
+@media only screen and (max-width: 600px) {
+  input[type="button"] {
+    width: 90%;
+  }
+}

@@ -140,19 +140,23 @@ io.on("connection", (socket) => {
 
         if(options.length < maxRestaurants) {
           viableRestaurants = await getRestaurants(restrictionsString + category + " restaurants", Math.ceil(portion), votes[id].maxPrice);
-          viableRestaurants.forEach(restaurant => {
+          for(i = 0; i < viableRestaurants.length; i++) {
+            if(options.length >= maxRestaurants) {
+              break;
+            }
+
             if(options.length == 0) {
-              options.push(restaurant);
+              options.push(viableRestaurants[i]);
             } else {
               safeToAdd = true;
               options.forEach(option => {
-                if(restaurant.name == option.name) {
+                if(viableRestaurants[i].name == option.name) {
                   safeToAdd = false;
                 }
               });
-              if(safeToAdd) { options.push(restaurant); }
+              if(safeToAdd) { options.push(viableRestaurants[i]); }
             }
-          });
+          }
         }
 
         count++;
@@ -211,7 +215,8 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     if(socket.room != undefined) {
-      rooms[socket.room] -= 1;
+      rooms[socket.room].users--;
+      io.to(socket.room).emit("numUsers", rooms[socket.room].users);
     }
     console.log("user disconnected");
   });

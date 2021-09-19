@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const http = require("http").Server(app);
+const http = require("https").Server(app);
 const io = require("socket.io")(http);
 const port = process.env.PORT || 80;
 const nanoid = require("nanoid/generate");

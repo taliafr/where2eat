@@ -1,8 +1,14 @@
 const express = require("express");
 const app = express();
-const http = require("http").Server(app);
-const io = require("socket.io")(http);
-const port = process.env.PORT || 3000;
+const http = require("https").Server(app);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "http://where2eat.vercel.app",
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
+const port = 3000;
 const nanoid = require("nanoid/generate");
 const path = require("path");
 const fetch = require("cross-fetch");

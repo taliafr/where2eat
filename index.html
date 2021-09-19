@@ -5,68 +5,115 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <!--Screen to input the code-->
-    <div id="code-screen" class="screen" style="display: block">
+    <!--Screen for creating or joining-->
+    <div id="welcome-screen" class="screen" style="display: block">
       <h1>where2eat</h1>
       <form id="code-form">
-        <input type="text" maxlength=6 /> <br>
-        <input type="button" value="Join" onClick="switchScreen('food-type-vote')" />
+        <input type="button" value="CREATE" onClick="switchScreen('create')" /> <br>
+        <input type="button" value="JOIN" onClick="switchScreen('join')" />
       </form>
+    </div>
+
+    <!--Screen for creating a new room-->
+    <div id="create-screen" class="screen">
+      <!--Price slider for picking max price-->
+      <h2>Maximum price level</h2>
+      <div style="padding-bottom: 50px">
+        <span>$</span>
+        <input type="range" id="max-price" class="slider" min=1 max=4 step=1 value=2 />
+        <span>$$$$</span>
+      </div>
+
+      <input type="button" value="CREATE" onClick="createRoom()" />
+    </div>
+
+    <!--Screen to input the code-->
+    <div id="join-screen" class="screen">
+      <form id="code-form">
+        <input type="text" id="room-id" /> <br>
+        <input type="button" value="JOIN" onClick="joinRoom()" />
+      </form>
+    </div>
+
+    <!--Screen for waiting on everyone to join-->
+    <div id="first-wait-screen" class="screen">
+      <h1>room code: <span id="room-code"></span></h1>
+      <h2>waiting for everyone to join...</h2>
+      <h1 id="num-users">1</h1>
+      <input type="button" id="start-category-button" value="START" onClick="startCategoryVote()" style="display: none" />
+    </div>
+
+    <!--Screen for waiting-->
+    <div id="wait-screen" class="screen">
+      <h1>waiting for votes...</h1>
     </div>
 
     <!--Screen to vote on food type-->
     <div id="food-type-vote-screen" class="screen">
+      <h2>Food category</h2>
       <div id="food-type-list" class="item-list">
-
-        <div class="item">
-          <div class="item-name">
-            <span>Chinese</span>
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="item-name">
-            <span>Mexican</span>
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="item-name">
-            <span>Indian</span>
-          </div>
-        </div>
-
+        <!--Filled by code later-->
       </div>
+
+      <!-- Dietary restrictions picker -->
+      <h2>Dietary restrictions</h2>
+      <div class="item-list">
+        <div class="item" onClick="checkToggle('restriction-vegetarian')">
+          <input type="checkbox" id="check-restriction-vegetarian" />
+          <div class="item-name">
+            Vegetarian
+          </div>
+        </div>
+
+        <div class="item" onClick="checkToggle('restriction-vegan')">
+          <input type="checkbox" id="check-restriction-vegan" />
+          <div class="item-name">
+            Vegan
+          </div>
+        </div>
+
+        <div class="item" onClick="checkToggle('restriction-gluten-free')">
+          <input type="checkbox" id="check-restriction-gluten-free" />
+          <div class="item-name">
+            Gluten-free
+          </div>
+        </div>
+
+        <div class="item" onClick="checkToggle('restriction-halal')">
+          <input type="checkbox" id="check-restriction-halal" />
+          <div class="item-name">
+            Halal
+          </div>
+        </div>
+
+        <div class="item" onClick="checkToggle('restriction-kosher')">
+          <input type="checkbox" id="check-restriction-kosher" />
+          <div class="item-name">
+            Kosher
+          </div>
+        </div>
+      </div>
+
+      <input type="button" value="VOTE" onClick="sendVote(0)"/>
     </div>
 
-    <!--Screen to-->
-    <div id="food-type-vote-screen" class="screen">
-      <div id="" class="item-list">
-
-        <div class="item">
-          <div class="item-name">
-            <span>Yasss Chinese</span>
-          </div>
-          <div class="item-desc">
-            <span></span>
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="item-name">
-            <span>Slay Mexican</span>
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="item-name">
-            <span>Mamas Indian</span>
-          </div>
-        </div>
-
+    <!--Screen to vote on restaurant-->
+    <div id="restaurant-vote-screen" class="screen">
+      <h2>Potential restaurants</h2>
+      <div id="restaurant-list" class="item-list">
+        <!--Filled in by code-->
       </div>
+
+      <input type="button" value="VOTE" onClick="sendVote(1)"/>
     </div>
 
-    <script src="js/index.js"></script>
+    <div id="restaurant-picked-screen" class="screen">
+      <h2>You're going to</h2>
+      <h1 id="picked-name"></h1>
+    </div>
+
+    <script type="text/javascript" src="js/index.js"></script>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="js/VoteManager.js"></script>
   </body>
 </html>

@@ -8,7 +8,7 @@ const io = require("socket.io")(http, {
     credentials: true
   }
 });
-const port = 3000;
+const port = 80;
 const nanoid = require("nanoid/generate");
 const path = require("path");
 const fetch = require("cross-fetch");

@@ -1,6 +1,6 @@
 # WhereToEat
 
-![WhereToEat logo](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/001/657/678/datas/original.jpg =660x540)
+![WhereToEat logo](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/001/657/678/datas/original.jpg)
 
 # What Inspired Us
 Our project was inspired by the difficulty of deciding on a restaurant as a large group and the tension it creates for the remainder of your friendship.

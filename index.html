@@ -20,7 +20,7 @@
       <h2>Maximum price level</h2>
       <div style="padding-bottom: 50px">
         <span>$</span>
-        <input type="range" id="max-price" class="slider" min=1 max=4 step=1 value=2 />
+        <input type="range" id="max-price" class="slider" min=1 max=4 step=1 value=2 autocomplete="off" />
         <span>$$$$</span>
       </div>
 
@@ -31,7 +31,7 @@
     <div id="join-screen" class="screen">
       <h2>Room code</h2>
       <form id="code-form">
-        <input type="text" id="room-id" /> <br>
+        <input type="text" id="room-id" autocomplete="off" /> <br>
         <input type="button" value="JOIN" onClick="joinRoom()" />
       </form>
     </div>
@@ -60,35 +60,35 @@
       <h2>Dietary restrictions</h2>
       <div class="item-list">
         <div class="item" onClick="checkToggle('restriction-vegetarian')">
-          <input type="checkbox" id="check-restriction-vegetarian" />
+          <input type="checkbox" id="check-restriction-vegetarian" autocomplete="off" />
           <div class="item-name">
             Vegetarian
           </div>
         </div>
 
         <div class="item" onClick="checkToggle('restriction-vegan')">
-          <input type="checkbox" id="check-restriction-vegan" />
+          <input type="checkbox" id="check-restriction-vegan" autocomplete="off" />
           <div class="item-name">
             Vegan
           </div>
         </div>
 
         <div class="item" onClick="checkToggle('restriction-gluten-free')">
-          <input type="checkbox" id="check-restriction-gluten-free" />
+          <input type="checkbox" id="check-restriction-gluten-free" autocomplete="off" />
           <div class="item-name">
             Gluten-free
           </div>
         </div>
 
         <div class="item" onClick="checkToggle('restriction-halal')">
-          <input type="checkbox" id="check-restriction-halal" />
+          <input type="checkbox" id="check-restriction-halal" autocomplete="off" />
           <div class="item-name">
             Halal
           </div>
         </div>
 
         <div class="item" onClick="checkToggle('restriction-kosher')">
-          <input type="checkbox" id="check-restriction-kosher" />
+          <input type="checkbox" id="check-restriction-kosher" autocomplete="off" />
           <div class="item-name">
             Kosher
           </div>

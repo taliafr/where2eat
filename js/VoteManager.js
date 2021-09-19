@@ -51,6 +51,14 @@ function sendVote(voteType) {
       }
     });
 
+    if(vote.categories.length == 0) {
+      document.querySelector("#food-type-warning").style.display = "block";
+      document.querySelector("#food-type-header").scrollIntoView();
+      return;
+    } else {
+      document.querySelector("#food-type-warning").style.display = "none";
+    }
+
     if(getCheck("restriction-vegetarian")) { vote.restrictions.push("Vegetarian"); }
     if(getCheck("restriction-vegan")) { vote.restrictions.push("Vegan"); }
     if(getCheck("restriction-gluten-free")) { vote.restrictions.push("Gluten-free"); }
@@ -59,7 +67,6 @@ function sendVote(voteType) {
 
     socket.emit("categoryVote", vote);
   } else {
-
     vote = []
 
     for(i = 0; i < numOfRestaurants; i++) {

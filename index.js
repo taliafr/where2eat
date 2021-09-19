@@ -36,6 +36,16 @@ async function getRestaurants(query, num, maxPrice) {
 var votes = {};
 var rooms = {};
 
+function kick(room) {
+  delete rooms[room];
+  delete votes[room];
+  console.log("deleted " + room);
+  io.sockets.adapter.rooms.get(room).forEach(s => {
+    io.sockets.sockets.get(s).leave(room);
+    io.sockets.sockets.get(s).room = undefined;
+  });
+}
+
 io.on("connection", (socket) => {
   console.log("user connected");
   socket.room = undefined;
@@ -61,7 +71,7 @@ io.on("connection", (socket) => {
   //room creation
   socket.on("createRoom", maxPrice => {
     //create unique ID and use it for room code
-    uniqid = nanoid("1234567890", 6);
+    uniqid = nanoid("1234567890ABCDEFHJKLMNPQRSTUVWXYZ", 6);
     socket.join(uniqid);
     socket.room = uniqid;
     socket.creator = true;
@@ -162,6 +172,9 @@ io.on("connection", (socket) => {
         if(count == Object.keys(votes[id].categories).length) {
           votes[id].restaurants = options;
           io.to(socket.room).emit("startRestaurauntVote", options);
+
+          //kick everyone if no suggestions
+          if(options.length == 0) { kick(socket.room); }
         }
       });
     }
@@ -194,21 +207,35 @@ io.on("connection", (socket) => {
     //if all clients have voted, choose the restaurant
     if(votes[id].votecount == rooms[id].users) {
       //calculate the restaurant with the max votes
-      var maxKey = "";
+      var maxKey = 0;
       var maxVal = 0;
+      var maxKeys = [];
       Object.keys(votes[id].restaurantIDs).forEach(restaurant => {
         restaurantVotes = votes[id].restaurantIDs[restaurant];
-        console.log(restaurantVotes);
+        if(restaurantVotes == maxVal) {
+          maxKeys.push(maxKey);
+          maxKey = restaurant;
+          maxKeys.push(restaurant);
+        }
         if(restaurantVotes > maxVal) {
           maxKey = restaurant;
           maxVal = restaurantVotes;
+          maxKeys = [];
         }
       });
+
+      if(maxKeys.length != 0) {
+        console.log(maxKeys);
+        maxKey = maxKeys[Math.floor(Math.random() * maxKeys.length)];
+      }
 
       console.log(votes[id].restaurants[maxKey]);
 
       //send the picked restaurant to everyone in the room
       io.to(socket.room).emit("restaurantPicked", votes[id].restaurants[maxKey]);
+
+      //kick everyone out of the room and delete it
+      kick(socket.room);
     }
   });
 
@@ -218,6 +245,7 @@ io.on("connection", (socket) => {
       io.to(socket.room).emit("numUsers", rooms[socket.room].users);
       if(rooms[socket.room].users == 0) {
         delete rooms[socket.room];
+        delete votes[socket.room];
         console.log("deleted " + socket.room);
       }
     }

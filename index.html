@@ -51,7 +51,8 @@
 
     <!--Screen to vote on food type-->
     <div id="food-type-vote-screen" class="screen">
-      <h2>Food category</h2>
+      <h2 id="food-type-header">Food category</h2>
+      <h3 id="food-type-warning" class="warning">You must choose a category!</h3>
       <div id="food-type-list" class="item-list">
         <!--Filled by code later-->
       </div>
@@ -114,15 +115,19 @@
       <h2>You're going to</h2>
       <h1 id="picked-name" style="padding-bottom: 0px; margin-bottom: 0px"></h1>
       <span id="picked-desc"></span>
+      <br> <br>
+      <input type="button" value="TRY AGAIN" onClick="switchScreen('welcome')"/>
     </div>
 
     <!--No matches screen-->
     <div id="no-matches-screen" class="screen">
       <h1>Uh oh. 🧐</h1>
-      <h2>It doesn't look like there were any good matches!</h2>
+      <h2>It doesn't look like there were any good matches open right now!</h2>
+      <br> <br>
+      <input type="button" value="TRY AGAIN" onClick="switchScreen('welcome')"/>
     </div>
 
-    <canvas id="confetti-canvas" style="position: absolute; width: 100vw; height: 100vh; top: 0px; left: 0px; z-index: 1000; pointer-events: none;"></canvas>
+    <canvas id="confetti-canvas" style="position: absolute; width: 100vw; height: 100vh; top: 0px; left: 0px; z-index: 1000; pointer-events: none; overflow: hidden;"></canvas>
 
     <script type="text/javascript" src="js/index.js"></script>
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>

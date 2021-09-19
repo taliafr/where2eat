@@ -1,6 +1,7 @@
 socket = io.connect("localhost:3000");
 room = undefined;
 numOfRestaurants = 0;
+canvas = document.querySelector("#confetti-canvas");
 
 foodCats = ["American", "Cajun", "Caribbean", "Chinese", "Czech", "Danish", "English", "German",
 "Greek", "Indian", "Indonesian", "Italian", "Japanese", "Korean", "Malaysian", "Mexican", "Pakistani",
@@ -13,6 +14,9 @@ socket.on("roomCode", roomID => {
 });
 socket.on("numUsers", num => {
   document.querySelector("#num-users").innerHTML = num;
+});
+socket.on("error", errorCode => {
+  switchScreen("welcome");
 });
 
 //create a new room
@@ -100,7 +104,6 @@ socket.on("startCategoryVote", function() {
 });
 
 socket.on("startRestaurauntVote", restaurants => {
-  console.log(restaurants);
   restaurantList = document.querySelector("#restaurant-list");
   restaurantList.innerHTML = "";
 
@@ -129,10 +132,24 @@ socket.on("startRestaurauntVote", restaurants => {
   numOfRestaurants = id;
 
   switchScreen("restaurant-vote");
+
+  if(restaurants.length == 0) {
+    switchScreen("no-matches");
+  }
 });
 
 socket.on("restaurantPicked", r => {
   document.querySelector("#picked-name").innerHTML = r.name;
+  document.querySelector("#picked-desc").innerHTML = r.rating + "★ - " + r.total_ratings + " ratings <br>" + r.address;
+
+  var myConfetti = confetti.create(canvas, {
+    resize: true,
+    useWorker: true
+  });
+  myConfetti({
+    particleCount: 250,
+    spread: Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+  });
 
   switchScreen("restaurant-picked");
 });

@@ -45,8 +45,7 @@ io.on("connection", (socket) => {
   socket.on("joinRoom", id => {
     //if room does not exist, send error code 0
     if(rooms[id] == undefined) {
-      console.log("slayyy");
-      io.to(socket).emit("error", 0);
+      io.to(socket.id).emit("error", 0);
     } else {
       socket.join(id);
       socket.room = id;

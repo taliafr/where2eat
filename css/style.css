@@ -47,6 +47,7 @@ div.screen input[type="button"] {
 }
 input[type="button"] {
   cursor: pointer;
+  min-width: 30%;
 }
 
 div.item-list {

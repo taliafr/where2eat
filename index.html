@@ -7,7 +7,7 @@
   <body>
     <!--Screen for creating or joining-->
     <div id="welcome-screen" class="screen" style="display: block">
-      <h1>where2eat</h1>
+      <img src="logo.png" />
       <form id="code-form">
         <input type="button" value="CREATE" onClick="switchScreen('create')" /> <br>
         <input type="button" value="JOIN" onClick="switchScreen('join')" />
@@ -95,6 +95,7 @@
       </div>
 
       <input type="button" value="VOTE" onClick="sendVote(0)"/>
+      <br> <br> <br>
     </div>
 
     <!--Screen to vote on restaurant-->
@@ -107,13 +108,24 @@
       <input type="button" value="VOTE" onClick="sendVote(1)"/>
     </div>
 
+    <!--Restaurant picked screen-->
     <div id="restaurant-picked-screen" class="screen">
       <h2>You're going to</h2>
-      <h1 id="picked-name"></h1>
+      <h1 id="picked-name" style="padding-bottom: 0px; margin-bottom: 0px"></h1>
+      <span id="picked-desc"></span>
     </div>
+
+    <!--No matches screen-->
+    <div id="no-matches-screen" class="screen">
+      <h1>Uh no. 🧐</h1>
+      <h2>It doesn't look like there were any good matches!</h2>
+    </div>
+
+    <canvas id="confetti-canvas" style="position: absolute; width: 100vw; height: 100vh; top: 0px; left: 0px; z-index: 1000; pointer-events: none;"></canvas>
 
     <script type="text/javascript" src="js/index.js"></script>
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="js/VoteManager.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
   </body>
 </html>

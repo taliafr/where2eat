@@ -216,6 +216,10 @@ io.on("connection", (socket) => {
     if(socket.room != undefined) {
       rooms[socket.room].users--;
       io.to(socket.room).emit("numUsers", rooms[socket.room].users);
+      if(rooms[socket.room].users == 0) {
+        delete rooms[socket.room];
+        console.log("deleted " + socket.room);
+      }
     }
     console.log("user disconnected");
   });

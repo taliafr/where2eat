@@ -29,6 +29,7 @@
 
     <!--Screen to input the code-->
     <div id="join-screen" class="screen">
+      <h2>Room code</h2>
       <form id="code-form">
         <input type="text" id="room-id" /> <br>
         <input type="button" value="JOIN" onClick="joinRoom()" />
@@ -37,15 +38,15 @@
 
     <!--Screen for waiting on everyone to join-->
     <div id="first-wait-screen" class="screen">
-      <h1>room code: <span id="room-code"></span></h1>
-      <h2>waiting for everyone to join...</h2>
+      <h1>Room code: <span id="room-code"></span></h1>
+      <h2>Waiting for everyone to join...</h2>
       <h1 id="num-users">1</h1>
       <input type="button" id="start-category-button" value="START" onClick="startCategoryVote()" style="display: none" />
     </div>
 
     <!--Screen for waiting-->
     <div id="wait-screen" class="screen">
-      <h1>waiting for votes...</h1>
+      <h1>Waiting for votes...</h1>
     </div>
 
     <!--Screen to vote on food type-->

@@ -79,6 +79,20 @@ function sendVote(voteType) {
       }
     }
 
+    var all0 = true;
+    vote.forEach(v => {
+      if(v != 0) {
+        all0 = false;
+      }
+    });
+    if(all0) {
+      document.querySelector("#restaurant-warning").style.display = "block";
+      document.querySelector("#restaurant-header").scrollIntoView();
+      return;
+    } else {
+      document.querySelector("#restaurant-warning").style.display = "none";
+    }
+
     console.log(vote);
 
     socket.emit("restaurantVote", vote);
@@ -127,7 +141,11 @@ socket.on("startRestaurauntVote", restaurants => {
     newRestName.innerHTML = r.name;
     var newRestDesc = document.createElement("div");
     newRestDesc.classList.add("item-desc");
-    newRestDesc.innerHTML = r.rating + "★ - " + r.total_ratings + " ratings <br>" + r.address;
+    plString = "";
+    for(i = 0; i < r.price_level; i++) {
+      plString += '$';
+    }
+    newRestDesc.innerHTML = r.rating + "★ - " + r.total_ratings + " ratings - " + plString + "<br>" + r.address;
     newRest.append(newRestCheck);
     newRest.append(newRestName);
     newRest.append(newRestDesc);
@@ -147,7 +165,11 @@ socket.on("startRestaurauntVote", restaurants => {
 
 socket.on("restaurantPicked", r => {
   document.querySelector("#picked-name").innerHTML = r.name;
-  document.querySelector("#picked-desc").innerHTML = r.rating + "★ - " + r.total_ratings + " ratings <br>" + r.address;
+  plString = "";
+  for(i = 0; i < r.price_level; i++) {
+    plString += '$';
+  }
+  document.querySelector("#picked-desc").innerHTML = r.rating + "★ - " + r.total_ratings + " ratings - " + plString + "<br>" + r.address;
 
   var myConfetti = confetti.create(canvas, {
     resize: true,

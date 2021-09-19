@@ -10,7 +10,9 @@ const fetch = require("cross-fetch");
 app.use(express.static(path.join(__dirname, "./")));
 
 async function getRestaurants(query, num, maxPrice) {
-  const res = await fetch("https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + "&maxprice=" + maxPrice + "&key=AIzaSyDhvS8Taz5XMYMB4SQsTgzeCYZqHNUTRVM");
+  console.log(query);
+
+  const res = await fetch("https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + " near me&locationbias=ipbias&maxprice=" + maxPrice + "&key=AIzaSyDhvS8Taz5XMYMB4SQsTgzeCYZqHNUTRVM");
   const restaurants = await res.json();
   var viableRestaurants = [];
 
@@ -21,6 +23,7 @@ async function getRestaurants(query, num, maxPrice) {
       rest.rating = r.rating;
       rest.address = r.formatted_address;
       rest.total_ratings = r.user_ratings_total;
+      rest.price_level = r.price_level
       //rest.photo_reference = r.photos.photo_reference;
       viableRestaurants.push(rest);
     }
@@ -140,7 +143,7 @@ io.on("connection", (socket) => {
         restrictionsString += restriction + " ";
       });
 
-      var maxRestaurants = 5;
+      var maxRestaurants = 6;
       var count = 0;
       Object.keys(votes[id].categories).forEach(async function(category) {
         var portion = (votes[id].categories[category] / votes[id].weightedvc) * maxRestaurants;

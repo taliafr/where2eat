@@ -1,4 +1,4 @@
-socket = io.connect("localhost:3000");
+socket = io.connect("localhost");
 room = undefined;
 numOfRestaurants = 0;
 canvas = document.querySelector("#confetti-canvas");

@@ -1,4 +1,4 @@
-socket = io.connect("https://where2eat.vercel.app");
+socket = io.connect("localhost:3000");
 room = undefined;
 numOfRestaurants = 0;
 canvas = document.querySelector("#confetti-canvas");

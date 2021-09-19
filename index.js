@@ -8,7 +8,7 @@ const cors = require("cors");
 const path = require("path");
 const fetch = require("cross-fetch");
 
-app.use(express.static(path.join(__dirname, "../")));
+app.use(express.static(path.join(__dirname, "./")));
 
 async function getRestaurants(query, num, maxPrice) {
   const res = await fetch("https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + "&maxprice=" + maxPrice + "&key=AIzaSyDhvS8Taz5XMYMB4SQsTgzeCYZqHNUTRVM");

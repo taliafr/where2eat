@@ -2,31 +2,36 @@ const express = require("express");
 const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3002;
 const nanoid = require("nanoid/generate");
 const path = require("path");
 const fetch = require("cross-fetch");
 
 app.use(express.static(path.join(__dirname, "./")));
 
-async function getRestaurants(query, num, maxPrice) {
+var votes = {};
+var rooms = {};
+
+async function getRestaurants(query, roomID, num, maxPrice) {
   console.log(query);
 
-  const res = await fetch("https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + " near me&locationbias=ipbias&maxprice=" + maxPrice + "&key=AIzaSyDhvS8Taz5XMYMB4SQsTgzeCYZqHNUTRVM");
+  var request = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + " near me&opennow&maxprice=" + maxPrice + "&location=" + rooms[roomID].lat + "," + rooms[roomID].long + "&key=AIzaSyDhvS8Taz5XMYMB4SQsTgzeCYZqHNUTRVM";
+  console.log(request);
+  const res = await fetch(request);
   const restaurants = await res.json();
   var viableRestaurants = [];
 
+  console.log(restaurants);
+
   restaurants.results.forEach(r => {
-    if(r.opening_hours != undefined && r.opening_hours.open_now) {
-      var rest = {};
-      rest.name = r.name;
-      rest.rating = r.rating;
-      rest.address = r.formatted_address;
-      rest.total_ratings = r.user_ratings_total;
-      rest.price_level = r.price_level
-      //rest.photo_reference = r.photos.photo_reference;
-      viableRestaurants.push(rest);
-    }
+    var rest = {};
+    rest.name = r.name;
+    rest.rating = r.rating;
+    rest.address = r.formatted_address;
+    rest.total_ratings = r.user_ratings_total;
+    rest.price_level = r.price_level
+    //rest.photo_reference = r.photos.photo_reference;
+    viableRestaurants.push(rest);
   });
 
   viableRestaurants.sort((a, b) => {
@@ -35,9 +40,6 @@ async function getRestaurants(query, num, maxPrice) {
 
   return viableRestaurants.slice(0, num);
 }
-
-var votes = {};
-var rooms = {};
 
 function kick(room) {
   delete rooms[room];
@@ -80,6 +82,7 @@ io.on("connection", (socket) => {
     socket.creator = true;
 
     rooms[uniqid] = {}
+    rooms[uniqid].ip = socket.request.connection.remoteAddress;
 
     console.log("Created room " + socket.room);
 
@@ -146,12 +149,20 @@ io.on("connection", (socket) => {
       var maxRestaurants = 6;
       var count = 0;
       Object.keys(votes[id].categories).forEach(async function(category) {
+        if(rooms[id].lat == undefined) {
+          console.log(rooms[id].ip);
+          const resIP = await (await fetch("https://api.ipgeolocation.io/ipgeo?apiKey=c070307a906c4ce2848980030f21b8cc&ip=" + rooms[id].ip)).json();
+          console.log(resIP);
+          rooms[id].lat = resIP.latitude;
+          rooms[id].long = resIP.longitude;
+        }
+
         var portion = (votes[id].categories[category] / votes[id].weightedvc) * maxRestaurants;
 
         console.log(portion);
 
         if(options.length < maxRestaurants) {
-          viableRestaurants = await getRestaurants(restrictionsString + category + " restaurants", Math.ceil(portion), votes[id].maxPrice);
+          viableRestaurants = await getRestaurants(restrictionsString + category + " restaurants", id, Math.ceil(portion), votes[id].maxPrice);
           for(i = 0; i < viableRestaurants.length; i++) {
             if(options.length >= maxRestaurants) {
               break;

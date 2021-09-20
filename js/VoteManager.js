@@ -102,6 +102,8 @@ function sendVote(voteType) {
 }
 
 socket.on("startCategoryVote", function() {
+  document.querySelector("#num-users").innerHTML = "1";
+
   foodList = document.querySelector("#food-type-list");
   foodList.innerHTML = "";
 

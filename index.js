@@ -15,6 +15,7 @@ var rooms = {};
 async function getRestaurants(query, roomID, num, maxPrice) {
   console.log(query);
 
+  // requests list of restaurants from google apis
   var request = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + " near me&opennow&maxprice=" + maxPrice + "&location=" + rooms[roomID].lat + "," + rooms[roomID].long + "&key=AIzaSyDhvS8Taz5XMYMB4SQsTgzeCYZqHNUTRVM";
   console.log(request);
   const res = await fetch(request);
@@ -23,6 +24,7 @@ async function getRestaurants(query, roomID, num, maxPrice) {
 
   console.log(restaurants);
 
+  // adds each restaurant to a list of viable restaurants in the area
   restaurants.results.forEach(r => {
     var rest = {};
     rest.name = r.name;
@@ -34,13 +36,16 @@ async function getRestaurants(query, roomID, num, maxPrice) {
     viableRestaurants.push(rest);
   });
 
+  // ranks viableRestaurants by their rating on Google Places
   viableRestaurants.sort((a, b) => {
     return b.rating - a.rating;
   });
-
+  
+//takes the num best restaurants
   return viableRestaurants.slice(0, num);
 }
 
+// kicks everyone out of the room once final restaurant is chosen
 function kick(room) {
   delete rooms[room];
   delete votes[room];
@@ -51,6 +56,7 @@ function kick(room) {
   });
 }
 
+// messages for server to receive from client
 io.on("connection", (socket) => {
   console.log("user connected");
   socket.room = undefined;
@@ -160,7 +166,7 @@ io.on("connection", (socket) => {
         var portion = (votes[id].categories[category] / votes[id].weightedvc) * maxRestaurants;
 
         console.log(portion);
-
+        // calls Google api to search for restaurants
         if(options.length < maxRestaurants) {
           viableRestaurants = await getRestaurants(restrictionsString + category + " restaurants", id, Math.ceil(portion), votes[id].maxPrice);
           for(i = 0; i < viableRestaurants.length; i++) {
@@ -237,7 +243,8 @@ io.on("connection", (socket) => {
           maxKeys = [];
         }
       });
-
+      
+      //randomly picks a restaurant out of the most voted restaurants
       if(maxKeys.length != 0) {
         console.log(maxKeys);
         maxKey = maxKeys[Math.floor(Math.random() * maxKeys.length)];
